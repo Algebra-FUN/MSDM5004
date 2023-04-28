@@ -14998,7 +14998,7 @@ $$<p>with 10 slices.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">^</span><span class="mi">4</span><span class="o">+</span><span class="mi">2</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">^</span><span class="mi">4</span><span class="o">-</span><span class="mi">2</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
 <span class="c"># the exact value</span><span class="w"></span>
 <span class="n">Iᴿ</span><span class="o">=</span><span class="n">integrate</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">float</span><span class="w"></span>
 </pre></div>
@@ -15022,7 +15022,7 @@ $$<p>with 10 slices.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>12.4</pre>
+<pre>4.4</pre>
 </div>
 
 </div>
@@ -15069,8 +15069,8 @@ $$<p>with 10 slices.</p>
 
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output " data-mime-type="text/markdown">
 <p><strong>Using Trapezoidal rule</strong>:</p>
-<p>The numerical result is 12.506560000000002.</p>
-<p>The fractional error is 0.008593548387096916.</p>
+<p>The numerical result is 4.50656.</p>
+<p>The fractional error is 0.024218181818181812.</p>
 
 </div>
 
@@ -15118,8 +15118,8 @@ $$<p>with 10 slices.</p>
 
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output " data-mime-type="text/markdown">
 <p><strong>Using Simpson rule</strong>:</p>
-<p>The numerical result is 12.400426666666666.</p>
-<p>The fractional error is 3.440860215047654e-5.</p>
+<p>The numerical result is 4.400426666666667.</p>
+<p>The fractional error is 9.696969696972666e-5.</p>
 
 </div>
 
@@ -15178,8 +15178,8 @@ $$<p>with 10 slices.</p>
 
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output " data-mime-type="text/markdown">
 <p><strong>Using Trapezoidal rule</strong>:</p>
-<p>The numerical result is 12.401066656000005.</p>
-<p>The fractional error is 8.602064516163944e-5.</p>
+<p>The numerical result is 4.401066656.</p>
+<p>The fractional error is 0.00024242181818179273.</p>
 
 </div>
 
@@ -15227,8 +15227,8 @@ $$<p>with 10 slices.</p>
 
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output " data-mime-type="text/markdown">
 <p><strong>Using Simpson rule</strong>:</p>
-<p>The numerical result is 12.400000042666667.</p>
-<p>The fractional error is 3.4408602132426464e-9.</p>
+<p>The numerical result is 4.400000042666667.</p>
+<p>The fractional error is 9.69696969186564e-9.</p>
 
 </div>
 
@@ -15462,7 +15462,7 @@ of the indeterminate form 0/0. Write a code to plot 𝑓(𝑧) from 𝑧 = 0.01 
 
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-    <div id="511977b2-e163-479f-b6dd-8716ff318599" style="width:600px;height:400px;"></div>
+    <div id="0c6e8dc9-dab3-42fb-bf52-437ce50d9c94" style="width:600px;height:400px;"></div>
     <script>
         requirejs.config({
         paths: {
@@ -15471,7 +15471,7 @@ of the indeterminate form 0/0. Write a code to plot 𝑓(𝑧) from 𝑧 = 0.01 
     });
     require(['plotly'], function (Plotly) {
 
-    Plotly.newPlot('511977b2-e163-479f-b6dd-8716ff318599', [
+    Plotly.newPlot('0c6e8dc9-dab3-42fb-bf52-437ce50d9c94', [
     {
         "xaxis": "x",
         "colorbar": {
@@ -16770,7 +16770,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
 
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-    <div id="3357b357-88ca-41f5-9789-9e97a3b5377c" style="width:600px;height:400px;"></div>
+    <div id="fee63e48-326a-49bc-a971-13a2f1fec433" style="width:600px;height:400px;"></div>
     <script>
         requirejs.config({
         paths: {
@@ -16779,7 +16779,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
     });
     require(['plotly'], function (Plotly) {
 
-    Plotly.newPlot('3357b357-88ca-41f5-9789-9e97a3b5377c', [
+    Plotly.newPlot('fee63e48-326a-49bc-a971-13a2f1fec433', [
     {
         "xaxis": "x1",
         "fill": "tozeroy",
@@ -31733,7 +31733,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
 
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-    <div id="e893a151-aad5-401b-82c8-176b6ef1c81f" style="width:600px;height:400px;"></div>
+    <div id="a43931b1-e5d9-4953-adb8-d29049edc815" style="width:600px;height:400px;"></div>
     <script>
         requirejs.config({
         paths: {
@@ -31742,7 +31742,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
     });
     require(['plotly'], function (Plotly) {
 
-    Plotly.newPlot('e893a151-aad5-401b-82c8-176b6ef1c81f', [
+    Plotly.newPlot('a43931b1-e5d9-4953-adb8-d29049edc815', [
     {
         "xaxis": "x",
         "colorbar": {
@@ -32114,7 +32114,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
 
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-    <div id="863bd218-d0d1-49bb-a91e-e88544f9fa7a" style="width:600px;height:400px;"></div>
+    <div id="094316a0-7563-430a-9aa6-136317ebd941" style="width:600px;height:400px;"></div>
     <script>
         requirejs.config({
         paths: {
@@ -32123,7 +32123,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
     });
     require(['plotly'], function (Plotly) {
 
-    Plotly.newPlot('863bd218-d0d1-49bb-a91e-e88544f9fa7a', [
+    Plotly.newPlot('094316a0-7563-430a-9aa6-136317ebd941', [
     {
         "xaxis": "x",
         "colorbar": {
@@ -32452,7 +32452,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
 
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-    <div id="cc74bb77-6c69-4b4e-a884-2c9ff0e4f87f" style="width:600px;height:400px;"></div>
+    <div id="ea4274d0-c0b3-4e91-ad00-b8c51634c1e6" style="width:600px;height:400px;"></div>
     <script>
         requirejs.config({
         paths: {
@@ -32461,7 +32461,7 @@ $$<h3 id="(a)-By-central-limit-theorem,-what-is-the-PDF-of-X-when-N-is-large?-Wr
     });
     require(['plotly'], function (Plotly) {
 
-    Plotly.newPlot('cc74bb77-6c69-4b4e-a884-2c9ff0e4f87f', [
+    Plotly.newPlot('ea4274d0-c0b3-4e91-ad00-b8c51634c1e6', [
     {
         "xaxis": "x1",
         "fill": "tozeroy",
@@ -33783,7 +33783,7 @@ $$<p>where $U\sim \mathcal{U}(0,1)$.</p>
 
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-    <div id="0b695fe9-ed12-4217-8f7a-4e3218fca1f4" style="width:600px;height:400px;"></div>
+    <div id="ddc5dec8-7aca-47af-9ca9-a39ef99b705f" style="width:600px;height:400px;"></div>
     <script>
         requirejs.config({
         paths: {
@@ -33792,7 +33792,7 @@ $$<p>where $U\sim \mathcal{U}(0,1)$.</p>
     });
     require(['plotly'], function (Plotly) {
 
-    Plotly.newPlot('0b695fe9-ed12-4217-8f7a-4e3218fca1f4', [
+    Plotly.newPlot('ddc5dec8-7aca-47af-9ca9-a39ef99b705f', [
     {
         "xaxis": "x1",
         "fill": "tozeroy",
@@ -35259,7 +35259,7 @@ $$<p>Plot a histogram of the deviates. Print out the fraction of random deviates
 
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-    <div id="78503df0-cb73-4ae9-810f-f041b50077af" style="width:600px;height:400px;"></div>
+    <div id="d039b55e-d664-41d8-b48b-3c692bb74f9a" style="width:600px;height:400px;"></div>
     <script>
         requirejs.config({
         paths: {
@@ -35268,7 +35268,7 @@ $$<p>Plot a histogram of the deviates. Print out the fraction of random deviates
     });
     require(['plotly'], function (Plotly) {
 
-    Plotly.newPlot('78503df0-cb73-4ae9-810f-f041b50077af', [
+    Plotly.newPlot('d039b55e-d664-41d8-b48b-3c692bb74f9a', [
     {
         "xaxis": "x1",
         "fill": "tozeroy",
@@ -36896,22 +36896,6 @@ $$<p>Plot a histogram of the deviates. Print out the fraction of random deviates
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div>
 </body>
 
