@@ -9,23 +9,21 @@
 \usepackage{tabularx}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 \usepackage{listings}
+\renewcommand\lstlistingname{Code}
 \usepackage[usenames,dvipsnames]{xcolor}
 
-%%
-%% Julia definition (c) 2014 Jubobs
-%%
-\lstdefinelanguage{Julia}%
+\lstdefinelanguage{Julia}
   {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
       end,export,false,for,function,immutable,import,importall,if,in,%
       macro,module,otherwise,quote,return,switch,true,try,type,typealias,%
-      using,while},%
-   sensitive=true,%
-   alsoother={$},%
-   morecomment=[l]\#,%
-   morecomment=[n]{\#=}{=\#},%
-   morestring=[s]{"}{"},%
-   morestring=[m]{'}{'},%
-}[keywords,comments,strings]%
+      using,while},
+   sensitive=true,
+   alsoother={\$},
+   morecomment=[l]\#,
+   morecomment=[n]{\#=}{=\#},
+   morestring=[s]{"}{"},
+   morestring=[m]{'}{'},
+}[keywords,comments,strings]
 
 \lstset{%
     language         = Julia,
@@ -59,15 +57,18 @@
     showtabs=false,                  
     tabsize=2
 }
-
 \lstset{style=mystyle}
 
 \begin{document}
 
-\title{Evolution of Surface of a Stressed Solid}
-\author{FAN YIFEI}
+\title{
+    MSDM5004 Project I\\
+    Evolution of Surface of a Stressed Solid}
+\titlerunning{MSDM5004 Project I}
+\author{FAN Yifei}
 \authorrunning{Y. FAN}
-\institute{HKUST, Hong Kong SAR, China}
+\institute{HKUST, Hong Kong SAR, China\\
+    \email{\href{mailto:yfanba@ust.hk}{yfanba@ust.hk}}}
 \maketitle
 
 \begin{abstract}
@@ -78,7 +79,7 @@
     \keywords{PDE \and FFT method\and Evolution of Surface.}
 \end{abstract}
 
-\section{PDE for Evolution of Surface}
+\section{Introduction for PDE of Evolution of Surface}
 
 The surface of a solid under stress is unstable to small perturbations. 
 Assume the height of the solid surface is $h(x, t)$, where $x$ is the spatial variable and $t$ is the time. 
@@ -181,8 +182,8 @@ We implement the numerical simulation in Julia.
 which will lead to the instability of the numerical scheme.
 In order to solve this issue, we calculate the Fouries transform of $h_0=0.01\cos x$ by hand to get the initial value of $\hat{h}$ avoiding the input error from the fft function.
 
-\item There is a gap between theorem and code. In theroetical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
-Meanhile, in this theroetical analysis, we use $k$ as the angle frequency, but in the code, we use $k$ as the time frequency. So so we should write a wrapper to coordinate the difference.
+\item There is a gap between theorem and code. In theoretical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
+Meanhile, in this theoretical analysis, we use $k$ as the angle frequency, but in the code, we use $k$ as the time frequency. So so we should write a wrapper to coordinate the difference.
 
 \item We use rfft and irfft to accelerate the computation, since the input is real number.
 \end{enumerate}
@@ -269,11 +270,11 @@ Finally, we analyze the elementary reason for the stability and instability of t
 \bibliography{refs}
 
 \section*{Appendix}
-\subsection*{Code for simulation}
+\subsection*{Code}
 
-\lstinputlisting[language=Julia]{../../code/FFTWrapper.jl}
+\lstinputlisting[caption={FFTW Wrapper},captionpos=t, label={FFTWrapper}, language=Julia]{../code/FFTWrapper.jl}
 
 \newpage
-\lstinputlisting[language=Julia]{../../code/ESPDESolve.jl}
+\lstinputlisting[caption={ES PDE Solver},captionpos=t, label={ESPDESolve}, language=Julia]{../code/ESPDESolve.jl}
 
 \end{document}

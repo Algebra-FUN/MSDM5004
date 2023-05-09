@@ -58,7 +58,7 @@ for r in rs
     idxs = Vector(0:0.5:2)
     xticks!(p,(π * idxs,string.(idxs).* " π"))
     display(p)
-    savefig(p,"docs/img/surface_snapshot(r=$r).pdf")
+    savefig(p,"../img/surface_snapshot(r=$r).pdf")
 end
 
 gr()
@@ -73,5 +73,5 @@ for r in rs
     zlabel!(p,"h")
     title!(p,"r=$r")
     display(p)
-    savefig(p,"docs/img/surface_3d(r=$r).pdf")
+    savefig(p,"../img/surface_3d(r=$r).pdf")
 end
