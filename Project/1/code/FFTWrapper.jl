@@ -1,3 +1,7 @@
+"""
+This file contains a wrapper for the FFTW library.
+"""
+
 import FFTW
 
 function conv(f,g)
