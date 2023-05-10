@@ -72,7 +72,7 @@
 \maketitle
 
 \begin{abstract}
-    In this project, we use FFT method to solve the PDE for the evolution of teh surface of a stressed solid. 
+    In this project, we use FFT method to solve the PDE for the evolution of the surface of a stressed solid. 
     We carry out numerical simulation and get result. 
     Then we analyze the elementary reason why there are different result for different $r$.\\
     The code of this project is available at \url{https://github.com/Algebra-FUN/MSDM5004/tree/main/Project/1}.
@@ -106,14 +106,12 @@ We use FFT method (in fact, pseudo-spectral method) to solve this PDE. That is, 
     \label{eq:fft_pde}
     \frac{\partial}{\partial t}\hat{h}=\lambda_k\hat{h}-r^2k^2\hat{f},
 \end{equation}
-
 where $\hat{h}$ is the Fourier transform of $h$,
 
 \begin{equation}
     \label{eq:2}
     f=r^2[4h_x^2+8hh_{xx}+4H^2(h_x)+8H(hH(h_x))_x],
 \end{equation}
-
 and $\hat{f}$ is the Fourier transform of $f$, and 
 
 \begin{equation}
@@ -124,10 +122,10 @@ In order to solve this PDE in frequency space, we need to compute the Hilbert tr
 Using the basic properties of differentiation and the convolution theorem of the Fourier transform, we have
 
 \begin{equation}
+    \label{eq:hatf}
     \hat{f}=r^2[12 (|k| \hat{h})*(|k| \hat{h})-8 (k^2 \hat{h})*\hat{h}-4(k \hat{h})*(k \hat{h})],
 \end{equation}
-
-where $*$ denote the opearation of convolution.
+where $*$ denote the operation of convolution.
 
 We use trapezoidal rule for the time discretization for the linear part and compute the nonlinear part explicitly, the numerical scheme is
 
@@ -135,7 +133,6 @@ We use trapezoidal rule for the time discretization for the linear part and comp
     \label{eq:3}
     \frac{\hat{h}^{n+1}_k-\hat{h}^{n}_k}{\Delta t}=\lambda_k\frac{\hat{h}^{n+1}_k+\hat{h}^{n}_k}2-r^2k^2\left(\frac32\hat{f}^n_k-\frac12\hat{f}^{n-1}_k\right),
 \end{equation}
-
 where $\Delta t$ is the time step, and $\hat{f}^{-1}_k=\hat{f}^{0}_k$. Here the notation $\hat{h}^n_k=\hat{h}(k,t_n)$ with $t_n=n\Delta t$.
 
 Using this Eq.~\eqref{eq:3}, we can compute the $\hat{h}$ by iteration.
@@ -167,7 +164,7 @@ The configuration of hyperparameters is shown in Table~\ref{tab:1}.
         notation & description & value \\
         \hline
         $N$   & number of nodes of the planar surface & 100   \\
-        $M$   & total time step & 40   \\
+        $M$   & total number of time step & 40   \\
         $\Delta t$   & time step & 0.01(0.002 for $r=5$)   \\
         \hline
     \end{tabularx}
@@ -183,9 +180,9 @@ which will lead to the instability of the numerical scheme.
 In order to solve this issue, we calculate the Fouries transform of $h_0=0.01\cos x$ by hand to get the initial value of $\hat{h}$ avoiding the input error from the fft function.
 
 \item There is a gap between theorem and code. In theoretical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
-Meanhile, in this theoretical analysis, we use $k$ as the angle frequency, but in the code, we use $k$ as the time frequency. So so we should write a wrapper to coordinate the difference.
+Meanwhile, in this theoretical analysis, we use $k$ as the angle frequency, but in the code, we use $k$ as the times frequency. So we should write a wrapper(Code \ref{FFTWrapper}) to coordinate the difference.
 
-\item We use rfft and irfft to accelerate the computation, since the input is real number.
+\item For implementation of the Eq.~\eqref{eq:hatf}, we use the convolution for discrete series with zero-padding.
 \end{enumerate}
 
 \section{Results and Discussion}
@@ -194,50 +191,67 @@ Meanhile, in this theoretical analysis, we use $k$ as the angle frequency, but i
 
 The numerical results are shown in Fig.~\ref{fig:1}.
 
-\begin{figure}
+\begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5,M=40).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8,M=40).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=5.0).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=5.0,M=40).pdf}  
     \end{subfigure}
-    \caption{Surface profiles $h$ at different time for $r=1.5,3.8,5.0$}
+    \caption{Surface profiles $h$ when $M=40$}
     \label{fig:1}
 \end{figure}
-
 This result seems reasonable. 
 And we also compare it with the result in the paper\cite{dong2023corrosion}, the tends of surface morphology evolution process is similar.
 
 For clearly showing the evolution of the surface, we also plot the 3d surface plot in Fig.~\ref{fig:2}.
 
-\begin{figure}
+\begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_3d(r=1.5).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_3d(r=1.5,M=40).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_3d(r=3.8).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_3d(r=3.8,M=40).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_3d(r=5.0).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_3d(r=5.0,M=40).pdf}  
     \end{subfigure}
-    \caption{3d surface plot of $h$ at different time for $r=1.5,3.8,5.0$}
+    \caption{3d surface plot of $h$ when $M=40$.}
     \label{fig:2}
 \end{figure}
 
-\subsubsection{Discussion}
+You may think the total time is too short since the $M$ is only $40$, 
+we also simulate the evolution of the surface $h$ for lone time by setting $M=1000$, the results are shown in Fig.~\ref{fig:3}.
 
-From the simulation results, we can see that the planar surface $h$ is unstable for $r=1.5,3.8$, but stable for $r=5.0$.
+\begin{figure}[!htbp]
+    \centering
+    \begin{subfigure}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5,M=1000).pdf}  
+    \end{subfigure}
+    \begin{subfigure}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8,M=1000).pdf}  
+    \end{subfigure}
+    \caption{Surface profiles $h$ when $M=40$}
+    \label{fig:3}
+\end{figure}
+From the Fig.~\ref{fig:3}, for the case $r=1.5,3.8$, we can see that only the last line is obvious 
+and other lines are rendered like horizon lines since their value are much less than the last one which means the $h$ diverge with time exponentially.
+
+\subsubsection{Discussion}
+From the simulation results in Fig.~\ref{fig:1} and Fig.~\ref{fig:2}, we can see that the planar surface $h$ is unstable for $r=1.5,3.8$, but stable for $r=5.0$.
 
 The planar surface tends to stretch for $r=1.5,3.8$, and the initial perturbation is amplified with time.
 The effect of the stretching is more obvious for $r=3.8$ than $r=1.5$.
@@ -251,7 +265,6 @@ By calculating the $\lambda_k$, the simplified Eq.~\eqref{eq:4} is shown as foll
     \label{eq:4}
     \lambda_k = (4-rk)r^3k^3
 \end{equation}
-
 where $k \leq 1$, since we use rfft and all the $k$ is positive integer(without considering the zero frequency in this case).
 
 Then when $r > 4$, $\lambda_k < 0$. 
@@ -259,7 +272,7 @@ In the Eq.~\eqref{eq:fft_pde}, $\frac{\partial}{\partial t}\hat{h}$ will negativ
 
 \section{Conclusion}
 
-In conclusion, we use FFT method to solve the PDE for the evolution of teh surface of a stressed solid. 
+In conclusion, we use FFT method to solve the PDE for the evolution of the surface of a stressed solid. 
 We use Julia to implement the code for numerical solution and overcome the gap between the theorem and code.
 Then we simulate the evolution of the surface for different $r$ and find that the planar surface is unstable for $r=1.5,3.8$, but stable for $r=5.0$.
 Finally, we analyze the elementary reason for the stability and instability of the planar surface.
@@ -269,12 +282,15 @@ Finally, we analyze the elementary reason for the stability and instability of t
 \bibliographystyle{splncs04}
 \bibliography{refs}
 
+\newpage
 \section*{Appendix}
 \subsection*{Code}
 
-\lstinputlisting[caption={FFTW Wrapper},captionpos=t, label={FFTWrapper}, language=Julia]{../code/FFTWrapper.jl}
+The code of this project is available at \url{https://github.com/Algebra-FUN/
+MSDM5004/tree/main/Project/1}. You are recommended to view the code online, since the listings package can't render unicode in code well.
 
-\newpage
-\lstinputlisting[caption={ES PDE Solver},captionpos=t, label={ESPDESolve}, language=Julia]{../code/ESPDESolve.jl}
+\lstinputlisting[caption={FFTW Wrapper}, captionpos=t, label={FFTWrapper}, language=Julia]{../code/FFTWrapper.jl}
+
+\lstinputlisting[caption={ES PDE Solver}, captionpos=t, label={ESPDESolve}, language=Julia]{../code/ESPDESolve.jl}
 
 \end{document}

@@ -1,6 +1,7 @@
 \documentclass[runningheads]{llncs}
 
 \usepackage{graphicx}
+\usepackage[utf8]{inputenc}
 \usepackage{subcaption}
 \captionsetup{compatibility=false}
 \usepackage{amsmath}
@@ -9,6 +10,7 @@
 \usepackage{tabularx}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 \usepackage{listings}
+\renewcommand\lstlistingname{Code}
 \usepackage[usenames,dvipsnames]{xcolor}
 
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
@@ -47,7 +49,7 @@
 \begin{abstract}
     In this project, we will perform spectral analysis on one QAR dataset to compute the EDR using a wind-based algorithm, 
     and compare the results with that provided by a commercial software employing the NRL algorithm. 
-    Then We will apply the same methods on an AIMMS20 dataset to calculate the EDRs.\\
+    Then We will apply the same methods on an AIMMS20 dataset to calculate the EDR.\\
     The code of this project is available at \url{https://github.com/Algebra-FUN/MSDM5004/tree/main/Project/2}.
     \keywords{Spectral Analysis \and Turbulence \and EDR}
 \end{abstract}
@@ -61,7 +63,7 @@ One standard metric to quantify turbulence is the “cubic root of eddy dissipat
 EDR can be estimated by wind-based algorithm or acceleration-based algorithm, the current project focus on the wind-based method.
 
 In this project, we will perform spectral analysis on one QAR dataset to compute the EDR using a wind-based algorithm, and compare the results with that provided by a commercial software employing the NRL algorithm. 
-We will then apply the same methods on an AIMMS20 dataset to calculate the EDRs.
+We will then apply the same methods on an AIMMS20 dataset to calculate the EDR.
 
 \section{Turbulence Theory}
 
@@ -70,7 +72,6 @@ According to turbulence theory, frequency spectra of transverse velocity (vertic
 \begin{equation}
     S_{\perp}(f)=C_k^{'}\left(\frac{U}{2\pi}\right)^{\frac23}\epsilon^{\frac23}f^{-\frac53},
 \end{equation}
-
 where $f$ is the frequency; $U$ is the average true air speed within the sampling window; $\epsilon$ the dissipation and $C^{'}_k$ being the Kolmogorov constant for transverse
 component which is around $0.65$. From this equation, we can find the relation between power spectrum of the vertical wind component and the frequency follows a $-\frac53$ power law.
 
@@ -83,7 +84,7 @@ Then we calculate the power spectrum of the vertical wind component
 and plot the log-log plot of the power spectrum of the vertical wind component in Fig.~\ref{fig:qar_loglog},
 where we can see the $\ln{S}$ is proportional to $\ln{f}$ and the line is quite noisy.
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=\textwidth]{../img/qar_loglog.pdf}
     \caption{Log-log plot of the power spectrum of the vertical wind component in QAR dataset}
@@ -94,8 +95,7 @@ In order to identify the frequency range, bounded by $\omega_1$ and $\omega_2$ t
 we should experiment with different sampling window on the vertical wind component to smooth the line. 
 We experiment with different sampling window, varying from 10 second to 2 minutes. The result is shown in Fig.~\ref{fig:1}.
 We show the fitted line coefficient and fitted goodness metric $R^2$ in the plot.
-
-\begin{figure}
+\begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
@@ -122,7 +122,7 @@ Then we choose $\omega_1=0.1$ and $\omega_2=1$ in following calculation.
 
 \section{Calculation of EDR for QAR Dataset}
 
-In this section, we will calculate the EDR for QAR dataset using MLE method and NLR method.
+In this section, we will calculate the EDR for QAR dataset using ML method and NLR method.
 
 \subsection{ML Method(Task 2)}
 
@@ -131,12 +131,11 @@ The Eddy Dissipation Rate (EDR) can be estimated by the Maximum Likelihood metho
 \begin{equation}
     \mbox{EDR}=\epsilon^{\frac13}=\left(\frac{2\pi}{U}\right)^{\frac13}\left[\frac1N \sum_{f=\omega_1}^{\omega_2}\left(\frac{S(f)f^{\frac53}}{C^{'}_k}\right)\right]^{\frac12},
 \end{equation}
-
 where $\omega_1$ and $\omega_2$ is the cut-off frequency, $S(f)$ is the power spectrum of the vertical wind component, $U$ is the average true air speed within the sampling window, $N$ is the number of data points in the sampling window, and $C^{'}_k$ is the Kolmogorov constant for transverse component which is around $0.65$.
 
 \paragraph{Implementation}
 
-We implement the ML method in Python. There is some details in the implementation:
+We implement the ML method in Python. There are some details in the implementation:
 
 \begin{itemize}
     \item The fft function in Numpy\cite{fft} is different from the theoretical definition of Fourier transform, the fft function in numpy normalizes on backward transform defaultly. 
@@ -148,7 +147,7 @@ We implement the ML method in Python. There is some details in the implementatio
 
 We carry out experiment with different sampling window $w \in [5,10,20]$, the result is shown in Fig.~\ref{fig:2}.
 
-\begin{figure}
+\begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
@@ -175,7 +174,6 @@ The Eddy Dissipation Rate (EDR) can be estimated by the NLR algorithm with the f
 \begin{equation}
     \epsilon^{\frac13}=\frac{\widehat{\sigma_w}}{\sqrt{1.05V_a^{\frac23}\left(\omega_1^{-\frac23}-\omega_2^{-\frac23}\right)}}
 \end{equation}
-
 where the $\widehat{\sigma_w}$ is the running standard deviation of the band-pass-filtered vertical wind component with cut-off frequency $\omega_1$ and $\omega_2$, 
 $V_a$ is the low-pass-filtered airspeed. In this experiment, we use the airspeed within sampling window as $V_a$.
 
@@ -183,7 +181,7 @@ $V_a$ is the low-pass-filtered airspeed. In this experiment, we use the airspeed
 
 We carry out experiment with different sampling window $w \in [5,10,20]$, the result is shown in Fig.~\ref{fig:3}.
 
-\begin{figure}
+\begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
@@ -209,7 +207,7 @@ In this section, we will calculate the EDR for AIMMS20 dataset using ML method a
 
 First of all, we load the data and plot the power spectrum of the vertical wind component in Fig.~\ref{fig:4}.
 
-\begin{figure}
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=.6\linewidth]{../img/probe_loglog.pdf}
     \caption{Log-log plot of the power spectrum of the vertical wind component in AIMMS20 dataset}
@@ -220,7 +218,7 @@ We choose $\omega_1=0.1$ and $\omega_2=1$ in following calculation.
 
 First, we calculate the EDR using ML method and NLR algorithm with different sampling window $w=5,10,20$ and vertical velocity, the result is shown in Fig.~\ref{fig:6}.
 
-\begin{figure}
+\begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
@@ -250,7 +248,7 @@ First, we calculate the EDR using ML method and NLR algorithm with different sam
 
 % We compute EDR using ML method and NLR algorithm with different sampling window $w=5,10,20$ and transverse velocity, the result is shown in Fig.~\ref{fig:5}.
 
-% \begin{figure}
+% \begin{figure}[!htbp]
 %     \centering
 %     \begin{subfigure}{.4\textwidth}
 %         \centering
@@ -270,199 +268,12 @@ First, we calculate the EDR using ML method and NLR algorithm with different sam
 
 \section{Conclusion}
 
-% \section{PDE for Evolution of Surface}
-
-% The surface of a solid under stress is unstable to small perturbations. 
-% Assume the height of the solid surface is $h(x, t)$, where $x$ is the spatial variable and $t$ is the time. 
-% The evolution of the surface is described by the PDE in Eq.~\eqref{eq:1}.
-
-% \begin{equation}
-%     \label{eq:1}
-%     h_t = r^2\frac{\partial}{\partial t}\left\{ -4rH(h_x)-r^2h_{xx}+4r^2h_x^2+8r^2hh_{xx}+4r^2H^2(h_x)+8r^2H(hH(h_x))_x\right\},
-% \end{equation}
-% where r > 0 is a constant, and $H$ is the Hilbert transform.
-
-% \section{FFT Method}
-
-% The Fourier transform of $H(g)(x)$ is
-
-% \begin{equation}
-%     \widehat{H(g)}(k)=-i\mbox{sgn}(k)\hat{g}(k).
-% \end{equation}
-% Thus, we have $\widehat{H(h_x)}(k)=|k|\hat{h}(k)$.
-
-% We use FFT method (in fact, pseudo-spectral method) to solve this PDE. That is, we evolve the PDE in the Fourier space:
-
-% \begin{equation}
-%     \label{eq:fft_pde}
-%     \frac{\partial}{\partial t}\hat{h}=\lambda_k\hat{h}-r^2k^2\hat{f},
-% \end{equation}
-
-% where $\hat{h}$ is the Fourier transform of $h$,
-
-% \begin{equation}
-%     \label{eq:2}
-%     f=r^2[4h_x^2+8hh_{xx}+4H^2(h_x)+8H(hH(h_x))_x],
-% \end{equation}
-
-% and $\hat{f}$ is the Fourier transform of $f$, and 
-
-% \begin{equation}
-%     \lambda_k=4r^3|k|^3-r^4k^4.
-% \end{equation}
-
-% In order to solve this PDE in frequency space, we need to compute the Hilbert transform of $f$ in Eq.~\eqref{eq:2}.
-% Using the basic properties of differentiation and the convolution theorem of the Fourier transform, we have
-
-% \begin{equation}
-%     \hat{f}=r^2[12 (|k| \hat{h})*(|k| \hat{h})-8 (k^2 \hat{h})*\hat{h}-4(k \hat{h})*(k \hat{h})],
-% \end{equation}
-
-% where $*$ denote the opearation of convolution.
-
-% We use trapezoidal rule for the time discretization for the linear part and compute the nonlinear part explicitly, the numerical scheme is
-
-% \begin{equation}
-%     \label{eq:3}
-%     \frac{\hat{h}^{n+1}_k-\hat{h}^{n}_k}{\Delta t}=\lambda_k\frac{\hat{h}^{n+1}_k+\hat{h}^{n}_k}2-r^2k^2\left(\frac32\hat{f}^n_k-\frac12\hat{f}^{n-1}_k\right),
-% \end{equation}
-
-% where $\Delta t$ is the time step, and $\hat{f}^{-1}_k=\hat{f}^{0}_k$. Here the notation $\hat{h}^n_k=\hat{h}(k,t_n)$ with $t_n=n\Delta t$.
-
-% Using this Eq.~\eqref{eq:3}, we can compute the $\hat{h}$ by iteration.
-
-% \section{Numerical Simulation}
-
-% \subsubsection{Requirements}
-
-% Consider the initial condition $h(x,0) = 0.01\cos x$ for periodic domain $x \in [0,2\pi]$, which is the planar surface $h = 0$ with a small perturbation. 
-% We simulate evolution of the surface $h$ for the following setting of $r$:
-
-
-% \begin{enumerate}
-%     \item $r = 1.5$,
-%     \item $r = 3.8$,
-%     \item $r = 5$.
-% \end{enumerate}
-
-% \subsubsection{Hyperparameters}
-
-% The configuration of hyperparameters is shown in Table~\ref{tab:1}.
-
-% \begin{table}[htbp]
-%     \centering
-%     \caption{Configuration of hyperparameters for the simulation}
-%     \label{tab:1}
-%     \begin{tabularx}{\textwidth}{|C|C|C|}
-%         \hline
-%         notation & description & value \\
-%         \hline
-%         $N$   & number of nodes of the planar surface & 100   \\
-%         $M$   & total time step & 40   \\
-%         $\Delta t$   & time step & 0.01(0.002 for $r=5$)   \\
-%         \hline
-%     \end{tabularx}
-% \end{table}
-
-% \subsubsection{Implementation}
-
-% We implement the numerical simulation in Julia.
-
-% \begin{enumerate}
-% \item We find that the input error from the fft function(from FFTW.jl library\cite{FFTW}) would be amplified by the iteration of Eq.~\eqref{eq:2},
-% which will lead to the instability of the numerical scheme.
-% In order to solve this issue, we calculate the Fouries transform of $h_0=0.01\cos x$ by hand to get the initial value of $\hat{h}$ avoiding the input error from the fft function.
-
-% \item There is a gap between theorem and code. In theroetical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
-% Meanhile, in this theroetical analysis, we use $k$ as the angle frequency, but in the code, we use $k$ as the time frequency. So so we should write a wrapper to coordinate the difference.
-
-% \item We use rfft and irfft to accelerate the computation, since the input is real number.
-% \end{enumerate}
-
-% \section{Results and Discussion}
-
-% \subsubsection{Simulation Results}
-
-% The numerical results are shown in Fig.~\ref{fig:1}.
-
-% \begin{figure}
-%     \centering
-%     \begin{subfigure}{.4\textwidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5).pdf}  
-%     \end{subfigure}
-%     \begin{subfigure}{.4\textwidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8).pdf}  
-%     \end{subfigure}
-%     \begin{subfigure}{.4\textwidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{../img/surface_snapshot(r=5.0).pdf}  
-%     \end{subfigure}
-%     \caption{Surface profiles $h$ at different time for $r=1.5,3.8,5.0$}
-%     \label{fig:1}
-% \end{figure}
-
-% This result seems reasonable. 
-% And we also compare it with the result in the paper\cite{dong2023corrosion}, the tends of surface morphology evolution process is similar.
-
-% For clearly showing the evolution of the surface, we also plot the 3d surface plot in Fig.~\ref{fig:2}.
-
-% \begin{figure}
-%     \centering
-%     \begin{subfigure}{.4\textwidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{../img/surface_3d(r=1.5).pdf}  
-%     \end{subfigure}
-%     \begin{subfigure}{.4\textwidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{../img/surface_3d(r=3.8).pdf}  
-%     \end{subfigure}
-%     \begin{subfigure}{.4\textwidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{../img/surface_3d(r=5.0).pdf}  
-%     \end{subfigure}
-%     \caption{3d surface plot of $h$ at different time for $r=1.5,3.8,5.0$}
-%     \label{fig:2}
-% \end{figure}
-
-% \subsubsection{Discussion}
-
-% From the simulation results, we can see that the planar surface $h$ is unstable for $r=1.5,3.8$, but stable for $r=5.0$.
-
-% The planar surface tends to stretch for $r=1.5,3.8$, and the initial perturbation is amplified with time.
-% The effect of the stretching is more obvious for $r=3.8$ than $r=1.5$.
-
-% While, the planar surface tends to converge and be stable for $r=5.0$, and the initial perturbation is damped with time.
-% And we can see the planar surface $h$ becomes $0$ after a long time.
-
-% By calculating the $\lambda_k$, the simplified Eq.~\eqref{eq:4} is shown as follows:
-
-% \begin{equation}
-%     \label{eq:4}
-%     \lambda_k = (4-rk)r^3k^3
-% \end{equation}
-
-% where $k \leq 1$, since we use rfft and all the $k$ is positive integer(without considering the zero frequency in this case).
-
-% Then when $r > 4$, $\lambda_k < 0$. 
-% In the Eq.~\eqref{eq:fft_pde}, $\frac{\partial}{\partial t}\hat{h}$ will negatively response to $\hat{h}$, which means the perturbation will be damped with time.
-
-% \section{Conclusion}
-
-% In conclusion, we use FFT method to solve the PDE for the evolution of teh surface of a stressed solid. 
-% We use Julia to implement the code for numerical solution and overcome the gap between the theorem and code.
-% Then we simulate the evolution of the surface for different $r$ and find that the planar surface is unstable for $r=1.5,3.8$, but stable for $r=5.0$.
-% Finally, we analyze the elementary reason for the stability and instability of the planar surface.
-
-
-
 \bibliographystyle{splncs04}
 \bibliography{refs}
 
 \section*{Appendix}
 \subsection*{Code}
 
-\lstinputlisting[caption={EDR Computation},captionpos=t, label={EDR Computation}, language=Python]{../code/EDRCompute.py}
+\lstinputlisting[caption={EDR Computation}, captionpos=t, label={EDR Computation}, language=Python]{../code/EDRCompute.py}
 
 \end{document}
