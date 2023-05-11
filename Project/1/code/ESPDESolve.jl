@@ -31,7 +31,6 @@ rs = [1.5;3.8;5.]
 h₀(x) = 0.01cos(x)
 ĥ⁰ = fftemplate(N)
 ĥ⁰[1+1] = 0.01
-ĥ⁰ = fftshift(ĥ⁰)
 
 for (M,s) in (40,1000)
     hs = Dict()

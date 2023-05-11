@@ -163,7 +163,7 @@ The configuration of hyperparameters is shown in Table~\ref{tab:1}.
         \hline
         notation & description & value \\
         \hline
-        $N$   & number of nodes of the planar surface & 100   \\
+        $N$   & number of nodes of the planar surface & 101   \\
         $M$   & total number of time step & 40   \\
         $\Delta t$   & time step & 0.01(0.002 for $r=5$)   \\
         \hline
@@ -182,7 +182,6 @@ In order to solve this issue, we calculate the Fouries transform of $h_0=0.01\co
 \item There is a gap between theorem and code. In theoretical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
 Meanwhile, in this theoretical analysis, we use $k$ as the angle frequency, but in the code, we use $k$ as the times frequency. So we should write a wrapper(Code \ref{FFTWrapper}) to coordinate the difference.
 
-\item For implementation of the Eq.~\eqref{eq:hatf}, we use the convolution for discrete series with zero-padding.
 \end{enumerate}
 
 \section{Results and Discussion}
@@ -244,11 +243,12 @@ we also simulate the evolution of the surface $h$ for lone time by setting $M=10
         \centering
         \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8,M=1000).pdf}  
     \end{subfigure}
-    \caption{Surface profiles $h$ when $M=40$}
+    \caption{Surface profiles $h$ when $M=1000$}
     \label{fig:3}
 \end{figure}
 From the Fig.~\ref{fig:3}, for the case $r=1.5,3.8$, we can see that only the last line is obvious 
 and other lines are rendered like horizon lines since their value are much less than the last one which means the $h$ diverge with time exponentially.
+So there is no need to simulate the evolution of the surface $h$ for lone time for the case $r=1.5,3.8$ until numerical overflow.
 
 \subsubsection{Discussion}
 From the simulation results in Fig.~\ref{fig:1} and Fig.~\ref{fig:2}, we can see that the planar surface $h$ is unstable for $r=1.5,3.8$, but stable for $r=5.0$.
