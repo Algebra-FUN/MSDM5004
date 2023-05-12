@@ -1,8 +1,8 @@
 """
-This file contains a wrapper for the FFTW library.
+This file contains a wrapper for the FFTW and DSP library.
 """
 
-import FFTW
+import FFTW, DSP
 
 fftfreq = FFTW.fftfreq
 
