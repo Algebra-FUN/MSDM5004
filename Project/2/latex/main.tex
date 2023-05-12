@@ -49,7 +49,7 @@
 \begin{abstract}
     In this project, we will perform spectral analysis on one QAR dataset to compute the EDR using a wind-based algorithm, 
     and compare the results with that provided by a commercial software employing the NRL algorithm. 
-    Then We will apply the same methods on an AIMMS20 dataset to calculate the EDR.\\
+    Then We will apply the same methods on an AIMMS20 dataset to calculate the EDR, analyze the result and report the turbulence encountered by the aircraft.\\
     The code of this project is available at \url{https://github.com/Algebra-FUN/MSDM5004/tree/main/Project/2}.
     \keywords{Spectral Analysis \and Turbulence \and EDR}
 \end{abstract}
@@ -145,7 +145,7 @@ We implement the ML method in Python. There are some details in the implementati
 
 \paragraph{Experiment}
 
-We carry out experiment with different sampling window $w \in [5,10,20]$, the result is shown in Fig.~\ref{fig:2}.
+We carry out experiment with different sampling window $w \in [3,5,10,20]$, the result is shown in Fig.~\ref{fig:2}.
 
 \begin{figure}[!htbp]
     \centering
@@ -216,29 +216,50 @@ First of all, we load the data and plot the power spectrum of the vertical wind 
 
 We choose $\omega_1=0.1$ and $\omega_2=1$ in following calculation.
 
-First, we calculate the EDR using ML method and NLR algorithm with different sampling window $w=5,10,20$ and vertical velocity, the result is shown in Fig.~\ref{fig:6}.
+First, we calculate the EDR using ML method and NLR algorithm with different sampling window $w=5,10,20$ and 
+vertical windspeed component, the result is shown in Fig.~\ref{fig:6}.
 
 \begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=3).pdf}
+        \caption{$w=3$}
+        \label{fig:6a}
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=5).pdf}
+        \caption{$w=5$}
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=10).pdf}
+        \caption{$w=10$}
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=20).pdf}
+        \caption{$w=20$}
     \end{subfigure}
     \caption{Estimation EDR of AIMMS20 dataset using ML method with different sampling window and vertical windspeed component}
     \label{fig:6}
 \end{figure}
+
+\subsection{Turbulence Report(Task 5)}
+
+From the Fig.~\ref{fig:6a}, we can see, at the end of flight, the estimated EDR is larger than $0.2$, 
+which means the turbulence at that time should be reported as “Moderate”.
+Although which only appears when $w=3$, we still report the turbulence at the end of flight as “Moderate”, since we should ensure the safety of flight and consider the uncertainty of estimation.
+
+\subsection{Discussion on results}
+
+We admit that the accuracy of EDR estimation is not enough, here are the reasons:
+
+\begin{enumerate}
+    \item Only consider the vertical wind component, other wind components may contribute to the turbulence.
+    \item The frequency of the data is not high enough (only 1HZ) which may cause the loss of information on high frequency. So you may collect more data with higher frequency to improve the accuracy.
+\end{enumerate}
 
 % Furthemore, in order to get a more precise estimation of EDR, we calculate transverse velocity instead of only vertical velocity.
 
@@ -272,8 +293,23 @@ First, we calculate the EDR using ML method and NLR algorithm with different sam
 
 \section{Conclusion}
 
-\bibliographystyle{splncs04}
-\bibliography{refs}
+In this conclusion, we performs spectral analysis on one QAR dataset to compute the EDR using a wind-based algorithm, and compare the results with that provided by a commercial software employing the NRL algorithm. 
+Our prediction is relative accurate and the MSE loss is small enough, considering that we only use the vertical wind component and the frequency of the data is not high enough.
+
+Then we apply the same methods on an AIMMS20 dataset to calculate the EDR, analyze the result and report the turbulence encountered by the aircraft. From the result, it seems there is no turbulence during the flight, but we still report the turbulence at the end of flight as “Moderate”, since we should ensure the safety of flight and consider the uncertainty of estimation.
+
+In further study, we should include other wind components and collect more data with higher frequency to improve the accuracy of EDR estimation.
+
+\begin{thebibliography}{8}
+    \bibitem{fft}
+    umpy: numpy.fft, \url{https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html}, last accessed: May 4 2023
+    
+    \bibitem{citekey}
+    Lee JCW, Leung CYY, Kok MH, Chan PW. A Comparison Study of EDR Estimates from the NLR and NCAR Algorithms. Atmosphere. 2022; 13(1):132. 
+
+    \bibitem{citekey}
+    Wacławczyk M, Gozingan AS, Nzotungishaka J, Mohammadi M, P. Malinowski S. Comparison of Different Techniques to Calculate Properties of Atmospheric Turbulence from Low-Resolution Data. Atmosphere. 2020; 11(2):199.
+\end{thebibliography}
 
 \section*{Appendix}
 \subsection*{Code}

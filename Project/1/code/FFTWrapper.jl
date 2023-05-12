@@ -6,10 +6,10 @@ import FFTW, DSP
 
 fftfreq = FFTW.fftfreq
 
-fftemplate(N) = zero(FFTW.fftfreq(N))
+fftemplate = zero ∘ FFTW.fftfreq
 
-fftshift(x) = FFTW.fftshift(x)
-ifftshift(x) = FFTW.ifftshift(x)
+fftshift = FFTW.fftshift
+ifftshift = FFTW.ifftshift
 
 fftfreq = fftshift ∘ FFTW.fftfreq
 

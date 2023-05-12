@@ -180,7 +180,10 @@ which will lead to the instability of the numerical scheme.
 In order to solve this issue, we calculate the Fouries transform of $h_0=0.01\cos x$ by hand to get the initial value of $\hat{h}$ avoiding the input error from the fft function.
 
 \item There is a gap between theorem and code. In theoretical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
-Meanwhile, in this theoretical analysis, we use $k$ as the angle frequency, but in the code, we use $k$ as the times frequency. So we should write a wrapper(Code \ref{FFTWrapper}) to coordinate the difference.
+Meanwhile, in this theoretical analysis, scientists use $k$ as the angle frequency, but in the code, the software engineers use $k$ as the times frequency. So we should write a wrapper(Code \ref{FFTWrapper}) to coordinate the difference.
+
+\item In order to implement the convolution in Eq.~\eqref{eq:hatf}, we write the the convolution with zero-padding to avoid the aliasing error. We don't use the fftconv function provided in Julia's library, 
+since the fftconv function may raise some numerical error in imaginary part of the result, which will distort the curve and destory the symmetric proprety of input cosine signal.
 
 \end{enumerate}
 

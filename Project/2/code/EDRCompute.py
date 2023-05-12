@@ -37,11 +37,11 @@ def EDR_ML_func(data,bound=[0.1,1],C_k=0.65,d=1/4,windspeed='VWRZ',airspeed='AIR
     return (2*np.pi/U)**(1/3)*np.mean(S*f**(5/3)/C_k)**.5
 
 def EDR_ML(data,w=10,d=1/4,**kwargs):
-    return list(map(partial(EDR_ML_func,d=d,**kwargs),data.rolling(int(w/d),center=True,min_periods=1)))
+    return np.array(list(map(partial(EDR_ML_func,d=d,**kwargs),data.rolling(int(w/d),center=True,min_periods=1))))
 
 def EDR_NLR_func(data,bound=[0.1,1],C=1.05,d=1/4,windspeed='VWRZ',airspeed='AIRSPEED'):
     f = np.fft.rfftfreq(len(data),d)
-    band = (f>=bound[0]) & (f<=bound[1])
+    band = (f>=bound[0]) & (f<=bound[1]) | (f == 0)
     S = np.abs(np.fft.rfft(data[windspeed],norm="forward"))
     S[~band] = 0
     ws = np.fft.irfft(S,norm="forward")
@@ -50,7 +50,7 @@ def EDR_NLR_func(data,bound=[0.1,1],C=1.05,d=1/4,windspeed='VWRZ',airspeed='AIRS
     return sigma*U**(-1/3)/np.sqrt(C*(bound[0]**(-2/3)-bound[1]**(-2/3)))
 
 def EDR_NLR(data,w=10,d=1/4,**kwargs):
-    return list(map(partial(EDR_NLR_func,d=d,**kwargs),data.rolling(int(w/d),center=True,min_periods=1)))
+    return np.array(list(map(partial(EDR_NLR_func,d=d,**kwargs),data.rolling(int(w/d),center=True,min_periods=1))))
 
 # def get_transverse_velocity(data,aircraft_v="ui,vi,wi",wind_v="uw,vw,ww"):
 #     aircraft_v = aircraft_v.split(",")
