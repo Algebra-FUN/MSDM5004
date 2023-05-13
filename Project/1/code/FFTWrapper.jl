@@ -16,10 +16,11 @@ fftfreq = fftshift ∘ FFTW.fftfreq
 fft(x) = fftshift(FFTW.fft(x)) / length(x)
 ifft(x) = FFTW.ifft(ifftshift(x)) * length(x)
 
-# fftconv(f, g) = FFTW.ifft(FFTW.fft(f) .* FFTW.fft(g))
-# fftconv(f, g) = DSP.conv(f,g)[1:length(f)]
+# fftconv(f, g) = fftshift(FFTW.ifft(FFTW.fft(ifftshift(f)) .* FFTW.fft(ifftshift(g))))
+# fftconv(f, g) = fftshift(DSP.conv(ifftshift(f),ifftshift(g))[1:length(f)])
+# fftconv(f) = fftconv(f, f)
 
-function conv(f, g, method=:zero_padding)
+function conv(f, g, method=:circular)
     h = zero(f)
     N = length(g)
     if method == :zero_padding

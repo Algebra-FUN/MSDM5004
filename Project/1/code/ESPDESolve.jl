@@ -24,13 +24,15 @@ function solve(ĥ⁰::Vector,N;L=2π,Δt=0.01,r=1.5,M=1000)
     return t,[ĥ⁰ ĥ]
 end
 
-N = 101
+N = 100
 L = 2π
 Δts = [0.01;0.01;0.002]
 rs = [1.5;3.8;5.]
-h₀(x) = 0.01cos(x)
-ĥ⁰ = fftemplate(N)
-ĥ⁰[1+1] = 0.01
+h₀ = 0.01cos.(x)
+ĥ⁰ = fft(h₀)
+# suppress initial input numerical error
+ĥ⁰[real.(ĥ⁰) .< 1e-4] .= 0
+ĥ⁰ .= real.(ĥ⁰)
 
 for (M,s) in (40,1000)
     hs = Dict()
