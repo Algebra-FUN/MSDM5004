@@ -20,7 +20,7 @@ ifft(x) = FFTW.ifft(ifftshift(x)) * length(x)
 # fftconv(f, g) = fftshift(DSP.conv(ifftshift(f),ifftshift(g))[1:length(f)])
 # fftconv(f) = fftconv(f, f)
 
-function conv(f, g, method=:circular)
+function conv(f, g, method=:zero_padding)
     h = zero(f)
     N = length(g)
     if method == :zero_padding
