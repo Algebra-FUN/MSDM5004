@@ -139,7 +139,7 @@ We implement the ML method in Python. There are some details in the implementati
 
 \begin{itemize}
     \item The fft function in Numpy\cite{fft} is different from the theoretical definition of Fourier transform, the fft function in numpy normalizes on backward transform defaultly. 
-    So we should set the parameter "norm" to "forward" to get the right spectrum.
+    So we should set the parameter "norm" to "ortho" to get the right spectrum.
     \item We also can use rfft and irfft in numpy to calculate the Fourier transform and inverse Fourier transform of real sequence, which is faster than fft and ifft.
 \end{itemize}
 

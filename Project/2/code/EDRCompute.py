@@ -7,9 +7,9 @@ import plotly.graph_objects as go
 def Sflogplot(data,windspeed="VWRZ",d=1/4,bound=[0.1,2],fig=go.Figure(),rolling=False):
     f = np.fft.rfftfreq(len(data),d)
     if not rolling:
-        S = np.abs(np.fft.rfft(data[windspeed]))
+        S = np.abs(np.fft.rfft(data[windspeed],norm="ortho"))**2
     else:
-        S = np.abs(np.fft.rfft(data[windspeed].rolling(int(rolling/d),center=True,min_periods=1).mean()))
+        S = np.abs(np.fft.rfft(data[windspeed].rolling(int(rolling/d),center=True,min_periods=1).mean(),norm="ortho"))**2
     fig.add_trace(go.Scatter(x=f[f>0], y=S[f>0], name=windspeed))
     band = (f>=bound[0]) & (f<=bound[1])
     f_ = f[band]
@@ -29,8 +29,8 @@ def Sflogplot(data,windspeed="VWRZ",d=1/4,bound=[0.1,2],fig=go.Figure(),rolling=
 
 def EDR_ML_func(data,bound=[0.1,1],C_k=0.65,d=1/4,windspeed='VWRZ',airspeed='AIRSPEED'):
     f = np.fft.rfftfreq(len(data),d)
+    S = np.abs(np.fft.rfft(data[windspeed],norm="ortho"))**2
     band = (f>=bound[0]) & (f<=bound[1])
-    S = np.abs(np.fft.rfft(data[windspeed],norm="forward"))
     U = np.mean(data[airspeed])
     S = S[band]
     f = f[band]
@@ -41,8 +41,8 @@ def EDR_ML(data,w=10,d=1/4,**kwargs):
 
 def EDR_NLR_func(data,bound=[0.1,1],C=1.05,d=1/4,windspeed='VWRZ',airspeed='AIRSPEED'):
     f = np.fft.rfftfreq(len(data),d)
+    S = np.fft.rfft(data[windspeed],norm="forward")
     band = (f>=bound[0]) & (f<=bound[1]) | (f == 0)
-    S = np.abs(np.fft.rfft(data[windspeed],norm="forward"))
     S[~band] = 0
     ws = np.fft.irfft(S,norm="forward")
     sigma = np.std(ws)
@@ -59,3 +59,4 @@ def EDR_NLR(data,w=10,d=1/4,**kwargs):
 #     aircraft_speed2 = (data[aircraft_v]**2).sum(axis=1)
 #     awdot = data.apply(lambda x: np.dot(x[aircraft_v],x[wind_v]),axis=1)
 #     return (wind_speed2-awdot**2/aircraft_speed2)**.5
+# %%
