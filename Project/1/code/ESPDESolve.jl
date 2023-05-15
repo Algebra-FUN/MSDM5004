@@ -8,7 +8,7 @@ using Plots
 f̂(ĥ,ω;r=1.5) = r^2*(12conv(abs.(ω) .* ĥ)-8conv(ĥ,ω .^ 2 .* ĥ)-4conv(ω .* ĥ))
 
 function solve(ĥ⁰::Vector,N;L=2π,Δt=0.01,r=1.5,M=1000)
-    ω = 2π*fftfreq(N,N/L)
+    ω = 2π*rfftfreq(N,N/L)
     λ = @. 4r^3*abs(ω)^3-r^4*ω^4
     f̂⁰ = f̂(ĥ⁰,ω;r=r)
     update(ĥⁿ,f̂ⁿ,f̂ⁿ⁻¹) = @. ((1/Δt+λ/2)*ĥⁿ-r^2*ω^2*(3*f̂ⁿ/2-f̂ⁿ⁻¹/2))/(1/Δt-λ/2)
@@ -24,54 +24,56 @@ function solve(ĥ⁰::Vector,N;L=2π,Δt=0.01,r=1.5,M=1000)
     return t,[ĥ⁰ ĥ]
 end
 
-N = 100
+N = 20
+M = 30
 L = 2π
 Δts = [0.01;0.01;0.002]
 rs = [1.5;3.8;5.]
-h₀ = 0.01cos.(x)
-ĥ⁰ = fft(h₀)
-# suppress initial input numerical error
-ĥ⁰[real.(ĥ⁰) .< 1e-4] .= 0
-ĥ⁰ .= real.(ĥ⁰)
+h₀(x) = 0.01cos(x)
+ĥ⁰ = rfftemplate(N)
+ĥ⁰[1+1] = 0.01/2
 
-for (M,s) in (40,1000)
-    hs = Dict()
-    ts = Dict()
-    for (r,Δt) in zip(rs,Δts)
-        t,ĥ = solve(ĥ⁰,N;L=L,r=r,Δt=Δt,M=M)
-        ts[r] = t
-        hs[r] = zeros(Float64,N,M+1)
-        for t in 1:M+1
-        hs[r][:,t] = real.(ifft(ĥ[:,t])) 
-        end
+hs = Dict()
+ĥs = Dict()
+ts = Dict()
+for (r,Δt) in zip(rs,Δts)
+    t,ĥ = solve(ĥ⁰,N;L=L,r=r,Δt=Δt,M=M)
+    ĥs[r] = ĥ
+    ts[r] = t
+    hs[r] = zeros(Float64,N,M+1)
+    for t in 1:M+1
+       hs[r][:,t] = irfft(ĥ[:,t],N) 
     end
+end
 
-    gr()
-    x = range(0,2π,length=N)
-    for r in rs
-        p = plot(size = (600, 400), title="r=$r")
-        t = ts[r]
-        h = hs[r]
-        for i in range(1,stop=M,step=floor(Int,M/8))
-            plot!(p, x, h[:,i] ,label="t=$(t[i])")
-        end
-        xlabel!(p,"x")
-        ylabel!(p,"h")
-        idxs = Vector(0:0.5:2)
-        xticks!(p,(π * idxs,string.(idxs).* " π"))
-        savefig(p,"../img/surface_snapshot(r=$r,M=$M).pdf")
+gr()
+x = range(0,2π,length=N+1)
+for r in rs
+    p = plot(size = (600, 400), title="r=$r")
+    t = ts[r]
+    h = hs[r]
+    for i in range(1,stop=M,step=floor(Int,M/7))
+        plot!(p, x, [h[:,i];h[1,i]] ,label="t=$(t[i])")
     end
+    xlabel!(p,"x")
+    ylabel!(p,"h")
+    idxs = Vector(0:0.5:2)
+    xticks!(p,(π * idxs,string.(idxs).* " π"))
+    display(p)
+    savefig(p,"../img/surface_snapshot(r=$r).pdf")
+end
 
-    for r in rs
-        p = surface(hs[r],size=(600,500))
-        xlabel!(p,"t")
-        tidxs = Vector(range(1,M+1,step=10))
-        xticks!(p,(tidxs,string.(ts[r][tidxs])))
-        idxs = Vector(range(0,N-1,step=25))
-        yticks!(p,(idxs,string.(2*idxs/(N-1)).* " π"))
-        ylabel!(p,"x")
-        zlabel!(p,"h")
-        title!(p,"r=$r")
-        savefig(p,"../img/surface_3d(r=$r,M=$M).pdf")
-    end
+gr()
+for r in rs
+    p = surface(hs[r],size=(600,500))
+    xlabel!(p,"t")
+    tidxs = Vector(range(1,M+1,step=10))
+    xticks!(p,(tidxs,string.(ts[r][tidxs])))
+    idxs = Vector(range(0,N,length=5))
+    yticks!(p,(idxs,string.(2*idxs/(N)).* " π"))
+    ylabel!(p,"x")
+    zlabel!(p,"h")
+    title!(p,"r=$r")
+    display(p)
+    savefig(p,"../img/surface_3d(r=$r).pdf")
 end

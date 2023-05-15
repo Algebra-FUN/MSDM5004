@@ -70,9 +70,9 @@ We will then apply the same methods on an AIMMS20 dataset to calculate the EDR.
 According to turbulence theory, frequency spectra of transverse velocity (vertical wind component being one) in the inertial sub-range of turbulence regime is given by:
 
 \begin{equation}
-    S_{\perp}(f)=C_k^{'}\left(\frac{U}{2\pi}\right)^{\frac23}\epsilon^{\frac23}f^{-\frac53},
+    S_{\perp}(f)=C_k^{'}\left(\frac{U}{2\pi}\right)^{\frac23}\varepsilon^{\frac23}f^{-\frac53},
 \end{equation}
-where $f$ is the frequency; $U$ is the average true air speed within the sampling window; $\epsilon$ the dissipation and $C^{'}_k$ being the Kolmogorov constant for transverse
+where $f$ is the frequency; $U$ is the average true air speed within the sampling window; $\varepsilon$ is the dissipation and $C^{'}_k$ being the Kolmogorov constant for transverse
 component which is around $0.65$. From this equation, we can find the relation between power spectrum of the vertical wind component and the frequency follows a $-\frac53$ power law.
 
 \section{Data Exploration and Verification(Task 1)}
@@ -93,8 +93,9 @@ where we can see the $\ln{S}$ is proportional to $\ln{f}$ and the line is quite 
 
 In order to identify the frequency range, bounded by $\omega_1$ and $\omega_2$ that best demonstrates the $-\frac53$ power law,
 we should experiment with different sampling window on the vertical wind component to smooth the line. 
-We experiment with different sampling window, varying from 10 second to 2 minutes. The result is shown in Fig.~\ref{fig:1}.
-We show the fitted line coefficient and fitted goodness metric $R^2$ in the plot.
+We experiment with different sampling window, varying from 10 second to 2 minutes. 
+The result is shown in Fig.~\ref{fig:1},
+which show the fitted line coefficient and fitted goodness metric $R^2$ in the plot.
 \begin{figure}[!htbp]
     \centering
     \begin{subfigure}{.4\textwidth}
@@ -117,7 +118,8 @@ We show the fitted line coefficient and fitted goodness metric $R^2$ in the plot
     \label{fig:1}
 \end{figure}
 
-From Fig.~\ref{fig:1}, the line between $0.1$ and $1$ is the smoothest and most straight part in the curve.
+From Fig.~\ref{fig:1}, we can see the slope of each fitted lines are close to $-\frac53$ and the $R^2$ is close to 1, which verifies the $-\frac53$ power law.
+And the line between $0.1$ and $1$ is the smoothest and most straight part in the curve.
 Then we choose $\omega_1=0.1$ and $\omega_2=1$ in following calculation.
 
 \section{Calculation of EDR for QAR Dataset}
@@ -129,7 +131,7 @@ In this section, we will calculate the EDR for QAR dataset using ML method and N
 The Eddy Dissipation Rate (EDR) can be estimated by the Maximum Likelihood method with the following equation:
 
 \begin{equation}
-    \mbox{EDR}=\epsilon^{\frac13}=\left(\frac{2\pi}{U}\right)^{\frac13}\left[\frac1N \sum_{f=\omega_1}^{\omega_2}\left(\frac{S(f)f^{\frac53}}{C^{'}_k}\right)\right]^{\frac12},
+    \mbox{EDR}=\varepsilon^{\frac13}=\left(\frac{2\pi}{U}\right)^{\frac13}\left[\frac1N \sum_{f=\omega_1}^{\omega_2}\left(\frac{S(f)f^{\frac53}}{C^{'}_k}\right)\right]^{\frac12},
 \end{equation}
 where $\omega_1$ and $\omega_2$ is the cut-off frequency, $S(f)$ is the power spectrum of the vertical wind component, $U$ is the average true air speed within the sampling window, $N$ is the number of data points in the sampling window, and $C^{'}_k$ is the Kolmogorov constant for transverse component which is around $0.65$.
 
@@ -145,7 +147,7 @@ We implement the ML method in Python. There are some details in the implementati
 
 \paragraph{Experiment}
 
-We carry out experiment with different sampling window $w \in [3,5,10,20]$, the result is shown in Fig.~\ref{fig:2}.
+We carry out experiment with different sampling window $w \in [5,10,20]$, the result is shown in Fig.~\ref{fig:2}.
 
 \begin{figure}[!htbp]
     \centering
@@ -165,14 +167,14 @@ We carry out experiment with different sampling window $w \in [3,5,10,20]$, the 
     \label{fig:2}
 \end{figure}
 
-From Fig.~\ref{fig:2}, when the sampling window $w=5$, the estimated EDR $\hat{\epsilon}^{\frac13}$ achieves the best MSE loss.
+From Fig.~\ref{fig:2}, when the sampling window $w=20$, the estimated EDR $\hat{\varepsilon}^{\frac13}$ achieves the best MSE loss.
 
 \subsection{NLR Method(Task 3)}
 
 The Eddy Dissipation Rate (EDR) can be estimated by the NLR algorithm with the following equation:
 
 \begin{equation}
-    \epsilon^{\frac13}=\frac{\widehat{\sigma_w}}{\sqrt{1.05V_a^{\frac23}\left(\omega_1^{-\frac23}-\omega_2^{-\frac23}\right)}}
+    \varepsilon^{\frac13}=\frac{\widehat{\sigma_w}}{\sqrt{1.05V_a^{\frac23}\left(\omega_1^{-\frac23}-\omega_2^{-\frac23}\right)}}
 \end{equation}
 where the $\widehat{\sigma_w}$ is the running standard deviation of the band-pass-filtered vertical wind component with cut-off frequency $\omega_1$ and $\omega_2$, 
 $V_a$ is the low-pass-filtered airspeed. In this experiment, we use the airspeed within sampling window as $V_a$.
@@ -199,13 +201,13 @@ We carry out experiment with different sampling window $w \in [5,10,20]$, the re
     \label{fig:3}
 \end{figure}
 
-From Fig.~\ref{fig:3}, when the sampling window $w=10$, the estimated EDR $\hat{\epsilon}^{\frac13}$ achieves the best MSE loss.
+From Fig.~\ref{fig:3}, when the sampling window $w=10$, the estimated EDR $\hat{\varepsilon}^{\frac13}$ achieves the best MSE loss.
 
 \section{Calculation of EDR for AIMMS20 Dataset(Task 4)}
 
 In this section, we will calculate the EDR for AIMMS20 dataset using ML method and NLR method.
 
-First of all, we load the data and plot the power spectrum of the vertical wind component in Fig.~\ref{fig:4}.
+First, we load the data and plot the power spectrum of the vertical wind component in Fig.~\ref{fig:4}.
 
 \begin{figure}[!htbp]
     \centering
@@ -216,7 +218,7 @@ First of all, we load the data and plot the power spectrum of the vertical wind 
 
 We choose $\omega_1=0.1$ and $\omega_2=1$ in following calculation.
 
-First, we calculate the EDR using ML method and NLR algorithm with different sampling window $w=5,10,20$ and 
+Second, we calculate the EDR using ML method and NLR algorithm with different sampling window $w=3,5,10,20$ and 
 vertical windspeed component, the result is shown in Fig.~\ref{fig:6}.
 
 \begin{figure}[!htbp]
@@ -224,40 +226,96 @@ vertical windspeed component, the result is shown in Fig.~\ref{fig:6}.
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=3).pdf}
-        \caption{$w=3$}
+
         \label{fig:6a}
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=5).pdf}
-        \caption{$w=5$}
+
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=10).pdf}
-        \caption{$w=10$}
+
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{../img/probe_edr(w=20).pdf}
-        \caption{$w=20$}
+
     \end{subfigure}
-    \caption{Estimation EDR of AIMMS20 dataset using ML method with different sampling window and vertical windspeed component}
+    \caption{Estimation EDR of AIMMS20 dataset using two method with different sampling window and vertical windspeed component}
     \label{fig:6}
 \end{figure}
 
 \subsection{Turbulence Report(Task 5)}
 
-From the Fig.~\ref{fig:6a}, we can see, at the end of flight, the estimated EDR is larger than $0.2$, 
-which means the turbulence at that time should be reported as “Moderate”.
-Although which only appears when $w=3$, we still report the turbulence at the end of flight as “Moderate”, since we should ensure the safety of flight and consider the uncertainty of estimation.
+As requirement of the task, we should classify the turbulence into three levels: “No need to report”, “Moderate” and “Severe” according to the EDR value 
+and the following rule:
+
+\begin{equation}
+    \text{Level} = 
+    \begin{cases}
+        \text{No need to report}, & \text{if } \hat{\varepsilon}^{\frac13} < 0.2, \\
+        \text{Moderate}, & \text{if } 0.2 \leq \hat{\varepsilon}^{\frac13} < 0.45, \\
+        \text{Severe}, & \text{if } \hat{\varepsilon}^{\frac13} \geq 0.45.
+    \end{cases}
+\end{equation}
+
+In order to ensure the safety of flight, we take the maximum of all estimated EDRs with different methods and hyparameters in order to cover all possible “Moderate” and “Severe” turbulence.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{../img/probe_edr(max).pdf}
+    \caption{Maximum estimation EDR of AIMMS20 dataset using vertical windspeed component}
+    \label{fig:7}
+\end{figure}
+
+From Fig.~\ref{fig:7}, we can see, there is no “Severe” turbulence in the whole flight, but there is “Moderate” turbulence at four points in the flight.
+The turbulence report is shown in Tab.~\ref{tab:1}.
+
+% Timestamp: 3.55361, EDR: 0.2475679568273921, Report: Moderate
+% Timestamp: 3.55361, EDR: 0.25639929122270116, Report: Moderate
+% Timestamp: 4.0425, EDR: 0.2033189499465586, Report: Moderate
+% Timestamp: 4.09194, EDR: 0.2560781852499747, Report: Moderate
+% Timestamp: 4.09194, EDR: 0.2112557523593747, Report: Moderate
+% Timestamp: 4.73861, EDR: 0.22236379104105897, Report: Moderate
+% Timestamp: 4.73861, EDR: 0.21213775414771138, Report: Moderate
+
+\begin{table}
+    \centering
+    \caption{Reported Turbulence}
+    \label{tab:1}
+    \begin{tabularx}{\textwidth}{|C|C|C|}
+        \hline
+        Dec Time & Maximum estimated EDR & Level \\
+        \hline
+        % 3.55361 & 0.2475679568273921 & Moderate \\
+        3.55361 & 0.2563992912227011 & Moderate \\
+        4.04250 & 0.2033189499465586 & Moderate \\
+        4.09194 & 0.2560781852499747 & Moderate \\
+        % 4.09194 & 0.2112557523593747 & Moderate \\
+        4.73861 & 0.2223637910410589 & Moderate \\
+        % 4.73861 & 0.21213775414771138 & Moderate \\
+        \hline
+    \end{tabularx} 
+\end{table}
+
+% In order to ensure the safety of flight, we take the maximum of  
+
+% From the Fig.~\ref{fig:6a}, we can see, at the end of flight, the estimated EDR is larger than $0.2$, 
+% which means the turbulence at that time should be reported as “Moderate”.
+% Although which only appears when $w=3$, we still report the turbulence at the end of flight as “Moderate”, since we should ensure the safety of flight and consider the uncertainty of estimation.
 
 \subsection{Discussion on results}
+
+We find that the ML method is more sensitive to the sampling window, since it relys on the instantaneous estimation of the spectrum at specific time point, 
+which means that this method needs high frequency data to get a more precise instantaneous estimation of the spectrum to improve the accuracy of EDR estimation.
 
 We admit that the accuracy of EDR estimation is not enough, here are the reasons:
 
 \begin{enumerate}
-    \item Only consider the vertical wind component, other wind components may contribute to the turbulence.
+    \item Only consider the vertical wind component, other wind components may contribute to the EDR.
     \item The frequency of the data is not high enough (only 1HZ) which may cause the loss of information on high frequency. So you may collect more data with higher frequency to improve the accuracy.
 \end{enumerate}
 
@@ -296,13 +354,14 @@ We admit that the accuracy of EDR estimation is not enough, here are the reasons
 In this conclusion, we performs spectral analysis on one QAR dataset to compute the EDR using a wind-based algorithm, and compare the results with that provided by a commercial software employing the NRL algorithm. 
 Our prediction is relative accurate and the MSE loss is small enough, considering that we only use the vertical wind component and the frequency of the data is not high enough.
 
-Then we apply the same methods on an AIMMS20 dataset to calculate the EDR, analyze the result and report the turbulence encountered by the aircraft. From the result, it seems there is no turbulence during the flight, but we still report the turbulence at the end of flight as “Moderate”, since we should ensure the safety of flight and consider the uncertainty of estimation.
+Then we apply the same methods on an AIMMS20 dataset to calculate the EDR, analyze the result and report the turbulence encountered by the aircraft. 
+From the result, it seems there is no obvious turbulence during the flight, but we still report some suspicious turbulence during the flight as “Moderate”, since we should ensure the safety of flight and consider the uncertainty of estimation.
 
 In further study, we should include other wind components and collect more data with higher frequency to improve the accuracy of EDR estimation.
 
 \begin{thebibliography}{8}
     \bibitem{fft}
-    umpy: numpy.fft, \url{https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html}, last accessed: May 4 2023
+    numpy: numpy.fft, \url{https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html}, last accessed: May 4 2023
     
     \bibitem{citekey}
     Lee JCW, Leung CYY, Kok MH, Chan PW. A Comparison Study of EDR Estimates from the NLR and NCAR Algorithms. Atmosphere. 2022; 13(1):132. 
@@ -311,6 +370,7 @@ In further study, we should include other wind components and collect more data 
     Wacławczyk M, Gozingan AS, Nzotungishaka J, Mohammadi M, P. Malinowski S. Comparison of Different Techniques to Calculate Properties of Atmospheric Turbulence from Low-Resolution Data. Atmosphere. 2020; 11(2):199.
 \end{thebibliography}
 
+\newpage
 \section*{Appendix}
 \subsection*{Code}
 

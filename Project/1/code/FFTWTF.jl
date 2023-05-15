@@ -1,14 +1,26 @@
-"""
-This file contains a wrapper for the FFTW library.
-"""
+import FFTW, DSP
 
-import FFTW
+# fftfreq = FFTW.fftfreq
+
+# fftemplate = zero ∘ FFTW.fftfreq
+
+# fftshift = FFTW.fftshift
+# ifftshift = FFTW.ifftshift
+
+# fftfreq = fftshift ∘ FFTW.fftfreq
+
+# fft(x) = fftshift(FFTW.fft(x)) / length(x)
+# ifft(x) = FFTW.ifft(ifftshift(x)) * length(x)
+
+# fftconv(f, g) = fftshift(FFTW.ifft(FFTW.fft(ifftshift(f)) .* FFTW.fft(ifftshift(g))))
+# fftconv(f, g) = fftshift(DSP.conv(ifftshift(f),ifftshift(g))[1:length(f)])
+# fftconv(f) = fftconv(f, f)
 
 rfftfreq = FFTW.rfftfreq
 rfftemplate = zero ∘ FFTW.rfftfreq
 
-rfft(x) = FFTW.rfft(x)/length(x)
-irfft(x,N) = FFTW.irfft(x,N)*N
+rfft(x) = FFTW.rfft(x) / length(x)
+irfft(x,N) = FFTW.irfft(x,N) * N
 
 function conv(f, g, method=:zero_padding)
     h = zero(f)

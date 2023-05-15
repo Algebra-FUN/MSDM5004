@@ -163,8 +163,8 @@ The configuration of hyperparameters is shown in Table~\ref{tab:1}.
         \hline
         notation & description & value \\
         \hline
-        $N$   & number of nodes of the planar surface & 100   \\
-        $M$   & total number of time step & 40   \\
+        $N$   & number of nodes of the planar surface & 20   \\
+        $M$   & total number of time step & 60   \\
         $\Delta t$   & time step & 0.01(0.002 for $r=5$)   \\
         \hline
     \end{tabularx}
@@ -179,11 +179,13 @@ We implement the numerical simulation in Julia.
 which will lead to the instability of the numerical scheme.
 In order to solve this issue, we calculate the Fouries transform of $h_0=0.01\cos x$ by hand to get the initial value of $\hat{h}$ avoiding the input error from the fft function.
 
-\item There is a gap between theorem and code. In theoretical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
-Meanwhile, in this theoretical analysis, scientists use $k$ as the angle frequency, but in the code, the software engineers use $k$ as the times frequency. So we should write a wrapper(Code \ref{FFTWrapper}) to coordinate the difference.
+% \item There is a gap between theorem and code. In theoretical analysis, the FFT normalizes on forward step, but in the code, the FFT normalizes on backward step. 
+% Meanwhile, in this theoretical analysis, scientists use $k$ as the angle frequency, but in the code, the software engineers use $k$ as the times frequency. So we should write a wrapper(Code \ref{FFTWrapper}) to coordinate the difference.
 
 \item In order to implement the convolution in Eq.~\eqref{eq:hatf}, we write the the convolution with zero-padding to avoid the aliasing error. We don't use the fftconv function provided in Julia's library, 
 since the fftconv function may raise some numerical error in imaginary part of the result, which will distort the curve and destory the symmetric proprety of input cosine signal.
+
+\item We use rfft and irfft function to accelerate the computation of the Fourier transform and inverse Fourier transform.
 
 \end{enumerate}
 
@@ -197,17 +199,17 @@ The numerical results are shown in Fig.~\ref{fig:1}.
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5,M=40).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8,M=40).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=5.0,M=40).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=5.0).pdf}  
     \end{subfigure}
-    \caption{Surface profiles $h$ when $M=40$}
+    \caption{Surface profiles $h$ when $M=15$}
     \label{fig:1}
 \end{figure}
 This result seems reasonable. 
@@ -219,39 +221,39 @@ For clearly showing the evolution of the surface, we also plot the 3d surface pl
     \centering
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_3d(r=1.5,M=40).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_3d(r=1.5).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_3d(r=3.8,M=40).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_3d(r=3.8).pdf}  
     \end{subfigure}
     \begin{subfigure}{.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{../img/surface_3d(r=5.0,M=40).pdf}  
+        \includegraphics[width=\linewidth]{../img/surface_3d(r=5.0).pdf}  
     \end{subfigure}
     \caption{3d surface plot of $h$ when $M=40$.}
     \label{fig:2}
 \end{figure}
 
-You may think the total time is too short since the $M$ is only $40$, 
-we also simulate the evolution of the surface $h$ for lone time by setting $M=1000$, the results are shown in Fig.~\ref{fig:3}.
+% You may think the total time is too short since the $M$ is only $40$, 
+% we also simulate the evolution of the surface $h$ for lone time by setting $M=1000$, the results are shown in Fig.~\ref{fig:3}.
 
-\begin{figure}[!htbp]
-    \centering
-    \begin{subfigure}{.4\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5,M=1000).pdf}  
-    \end{subfigure}
-    \begin{subfigure}{.4\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8,M=1000).pdf}  
-    \end{subfigure}
-    \caption{Surface profiles $h$ when $M=1000$}
-    \label{fig:3}
-\end{figure}
-From the Fig.~\ref{fig:3}, for the case $r=1.5,3.8$, we can see that only the last line is obvious 
-and other lines are rendered like horizon lines since their value are much less than the last one which means the $h$ diverge with time exponentially.
-So there is no need to simulate the evolution of the surface $h$ for lone time for the case $r=1.5,3.8$ until numerical overflow.
+% \begin{figure}[!htbp]
+%     \centering
+%     \begin{subfigure}{.4\textwidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{../img/surface_snapshot(r=1.5,M=1000).pdf}  
+%     \end{subfigure}
+%     \begin{subfigure}{.4\textwidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{../img/surface_snapshot(r=3.8,M=1000).pdf}  
+%     \end{subfigure}
+%     \caption{Surface profiles $h$ when $M=1000$}
+%     \label{fig:3}
+% \end{figure}
+% From the Fig.~\ref{fig:3}, for the case $r=1.5,3.8$, we can see that only the last line is obvious 
+% and other lines are rendered like horizon lines since their value are much less than the last one which means the $h$ diverge with time exponentially.
+% So there is no need to simulate the evolution of the surface $h$ for lone time for the case $r=1.5,3.8$ until numerical overflow.
 
 \subsubsection{Discussion}
 From the simulation results in Fig.~\ref{fig:1} and Fig.~\ref{fig:2}, we can see that the planar surface $h$ is unstable for $r=1.5,3.8$, but stable for $r=5.0$.
@@ -268,7 +270,7 @@ By calculating the $\lambda_k$, the simplified Eq.~\eqref{eq:4} is shown as foll
     \label{eq:4}
     \lambda_k = (4-rk)r^3k^3
 \end{equation}
-where $k \leq 1$, since we use rfft and all the $k$ is positive integer(without considering the zero frequency in this case).
+where $k \geq 1$, since we use rfft and all the $k$ is positive integer(without considering the zero frequency in this case).
 
 Then when $r > 4$, $\lambda_k < 0$. 
 In the Eq.~\eqref{eq:fft_pde}, $\frac{\partial}{\partial t}\hat{h}$ will negatively response to $\hat{h}$, which means the perturbation will be damped with time.
