@@ -3,7 +3,6 @@ from functools import partial
 import scipy
 import plotly.graph_objects as go
 
-# %%
 def Sflogplot(data,windspeed="VWRZ",d=1/4,bound=[0.1,2],fig=go.Figure(),rolling=False):
     f = np.fft.rfftfreq(len(data),d)
     if not rolling:
@@ -66,4 +65,3 @@ def report(data,EDR):
 #     aircraft_speed2 = (data[aircraft_v]**2).sum(axis=1)
 #     awdot = data.apply(lambda x: np.dot(x[aircraft_v],x[wind_v]),axis=1)
 #     return (wind_speed2-awdot**2/aircraft_speed2)**.5
-# %%
