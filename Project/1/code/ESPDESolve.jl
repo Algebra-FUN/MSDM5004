@@ -5,7 +5,7 @@ include("FFTWrapper.jl")
 
 using Plots
 
-f̂(ĥ,ω;r=1.5) = r^2*(12conv(abs.(ω) .* ĥ)-8conv(ĥ,ω .^ 2 .* ĥ)-4conv(ω .* ĥ))
+f̂(ĥ,ω;r=1.5) = r^2*(4conv(abs.(ω) .* ĥ)+8abs.(ω) .* conv(ĥ,abs.(ω) .* ĥ)-8conv(ĥ,ω .^ 2 .* ĥ)-4conv(ω .* ĥ))
 
 function solve(ĥ⁰::Vector,N;L=2π,Δt=0.01,r=1.5,M=1000)
     ω = 2π*rfftfreq(N,N/L)
@@ -25,9 +25,9 @@ function solve(ĥ⁰::Vector,N;L=2π,Δt=0.01,r=1.5,M=1000)
 end
 
 N = 20
-M = 30
+M = 40
 L = 2π
-Δts = [0.01;0.01;0.002]
+Δts = [0.01;0.01;0.005]
 rs = [1.5;3.8;5.]
 h₀(x) = 0.01cos(x)
 ĥ⁰ = rfftemplate(N)
@@ -44,36 +44,4 @@ for (r,Δt) in zip(rs,Δts)
     for t in 1:M+1
        hs[r][:,t] = irfft(ĥ[:,t],N) 
     end
-end
-
-gr()
-x = range(0,2π,length=N+1)
-for r in rs
-    p = plot(size = (600, 400), title="r=$r")
-    t = ts[r]
-    h = hs[r]
-    for i in range(1,stop=M,step=floor(Int,M/7))
-        plot!(p, x, [h[:,i];h[1,i]] ,label="t=$(t[i])")
-    end
-    xlabel!(p,"x")
-    ylabel!(p,"h")
-    idxs = Vector(0:0.5:2)
-    xticks!(p,(π * idxs,string.(idxs).* " π"))
-    display(p)
-    savefig(p,"../img/surface_snapshot(r=$r).pdf")
-end
-
-gr()
-for r in rs
-    p = surface(hs[r],size=(600,500))
-    xlabel!(p,"t")
-    tidxs = Vector(range(1,M+1,step=10))
-    xticks!(p,(tidxs,string.(ts[r][tidxs])))
-    idxs = Vector(range(0,N,length=5))
-    yticks!(p,(idxs,string.(2*idxs/(N)).* " π"))
-    ylabel!(p,"x")
-    zlabel!(p,"h")
-    title!(p,"r=$r")
-    display(p)
-    savefig(p,"../img/surface_3d(r=$r).pdf")
 end

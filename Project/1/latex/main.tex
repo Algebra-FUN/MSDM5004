@@ -123,7 +123,7 @@ Using the basic properties of differentiation and the convolution theorem of the
 
 \begin{equation}
     \label{eq:hatf}
-    \hat{f}=r^2[12 (|k| \hat{h})*(|k| \hat{h})-8 (k^2 \hat{h})*\hat{h}-4(k \hat{h})*(k \hat{h})],
+    \hat{f}=r^2\left[4(|k| \hat{h})*(|k| \hat{h})+8|k|\left[\hat{h}*(|k| \hat{h})\right]-8 (k^2 \hat{h})*\hat{h}-4(k \hat{h})*(k \hat{h})\right],
 \end{equation}
 where $*$ denote the operation of convolution.
 
@@ -164,7 +164,7 @@ The configuration of hyperparameters is shown in Table~\ref{tab:1}.
         notation & description & value \\
         \hline
         $N$   & number of nodes of the planar surface & 20   \\
-        $M$   & total number of time step & 60   \\
+        $M$   & total number of time step & 10   \\
         $\Delta t$   & time step & 0.01(0.002 for $r=5$)   \\
         \hline
     \end{tabularx}
@@ -209,7 +209,7 @@ The numerical results are shown in Fig.~\ref{fig:1}.
         \centering
         \includegraphics[width=\linewidth]{../img/surface_snapshot(r=5.0).pdf}  
     \end{subfigure}
-    \caption{Surface profiles $h$ when $M=15$}
+    \caption{Surface profiles $h$}
     \label{fig:1}
 \end{figure}
 This result seems reasonable. 
@@ -231,7 +231,7 @@ For clearly showing the evolution of the surface, we also plot the 3d surface pl
         \centering
         \includegraphics[width=\linewidth]{../img/surface_3d(r=5.0).pdf}  
     \end{subfigure}
-    \caption{3d surface plot of $h$ when $M=40$.}
+    \caption{3d surface plot of $h$}
     \label{fig:2}
 \end{figure}
 
