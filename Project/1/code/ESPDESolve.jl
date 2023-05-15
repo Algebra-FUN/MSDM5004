@@ -24,10 +24,10 @@ function solve(ĥ⁰::Vector,N;L=2π,Δt=0.01,r=1.5,M=1000)
     return t,[ĥ⁰ ĥ]
 end
 
-N = 20
-M = 40
+N = 50
+M = 30
 L = 2π
-Δts = [0.01;0.01;0.005]
+Δts = [0.005;0.005;0.001]
 rs = [1.5;3.8;5.]
 h₀(x) = 0.01cos(x)
 ĥ⁰ = rfftemplate(N)

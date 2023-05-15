@@ -92,7 +92,7 @@ where we can see the $\ln{S}$ is proportional to $\ln{f}$ and the line is quite 
 \end{figure}
 
 In order to identify the frequency range, bounded by $\omega_1$ and $\omega_2$ that best demonstrates the $-\frac53$ power law,
-we should experiment with different sampling window on the vertical wind component to smooth the line. 
+we should take the rolling mean with different sampling window size on the vertical windspeed to smooth the series both on time domain and frequency domain. 
 We experiment with different sampling window, varying from 10 second to 2 minutes. 
 The result is shown in Fig.~\ref{fig:1},
 which show the fitted line coefficient and fitted goodness metric $R^2$ in the plot.
