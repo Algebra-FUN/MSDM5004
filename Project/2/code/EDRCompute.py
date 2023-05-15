@@ -19,8 +19,8 @@ def Sflogplot(data,windspeed="VWRZ",d=1/4,bound=[0.1,2],fig=go.Figure(),rolling=
     if not rolling:
         title = f"ln(S)-ln(f) plot of {windspeed} (fit goodness: r^2={r2:.2f}, f∈{bound})"
     else:
-        title = f"ln(S)-ln(f) plot of {windspeed} (window: w={rolling}, fit goodness: r^2={r2:.2f}, f∈{bound})"
-    fig.add_trace(go.Scatter(x=f_, y=np.exp(a*np.log(f_)+b), name=f"ln(S)={a:.2f}ln(f)+{b:.2f}"))
+        title = f"ln(S)-ln(f) plot of {windspeed} (w={rolling}, r^2={r2:.2f}, f∈{bound})"
+    fig.add_trace(go.Scatter(x=f_, y=np.exp(a*np.log(f_)+b), name=f"ln(S)={a:.2f}ln(f){b:.2f}"))
     fig.update_layout(title=title, xaxis_title="f", yaxis_title="S")
     fig.update_layout(legend=dict(yanchor="top",y=1,xanchor="right",x=1))
     fig.update_xaxes(type="log")
@@ -51,6 +51,13 @@ def EDR_NLR_func(data,bound=[0.1,1],C=1.05,d=1/4,windspeed='VWRZ',airspeed='AIRS
 
 def EDR_NLR(data,w=10,d=1/4,**kwargs):
     return np.array(list(map(partial(EDR_NLR_func,d=d,**kwargs),data.rolling(int(w/d),center=True,min_periods=1))))
+
+def report(data,EDR):
+    for t,edr in zip(data["dec_time"],EDR):
+        if edr >= 0.2:
+            print(f"Timestamp: {t}, EDR: {edr}, Report: Moderate")
+        elif edr >= 0.45:
+            print(f"Timestamp: {t}, EDR: {edr}, Report: Severe")
 
 # def get_transverse_velocity(data,aircraft_v="ui,vi,wi",wind_v="uw,vw,ww"):
 #     aircraft_v = aircraft_v.split(",")
